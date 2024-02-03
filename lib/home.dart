@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pause_timer/button_widget.dart';
 
@@ -10,12 +11,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String message = "Start";
+  String message = "Good Luck !!";
 
   static const maxSeconds = 5;
   int seconds = maxSeconds;
   int currentSec = 12;
-  int randomNumber = 0;
+  var randomInt = Random().nextInt(60);
 
   bool won = false;
 
@@ -32,8 +33,12 @@ class _HomeState extends State<Home> {
     });
   }
 
-  stopTimer(){
+  stopTimer() {
     timer?.cancel();
+    setState(() {
+      currentSec = seconds;
+      seconds = maxSeconds;
+    });
   }
 
   onClick() {
@@ -65,9 +70,10 @@ class _HomeState extends State<Home> {
         ),
       ),
       body: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20.0),
+        margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
         width: MediaQuery.of(context).size.width,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Row(
               children: [
@@ -76,32 +82,54 @@ class _HomeState extends State<Home> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   width: MediaQuery.of(context).size.width * 0.42,
-                  child: Column(children: [
-                    const Text('Current Seconds'),
-                    const Divider(
-                      color: Colors.black45,
-                    ),
-                    Text('$currentSec'),
-                  ]),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: const Color(0xFF000000),
+                          width: 1.0,
+                          style: BorderStyle.solid,
+                          strokeAlign: BorderSide.strokeAlignInside,
+                        )),
+                    child: Column(children: [
+                      const Text(
+                        'Current Seconds',
+                        style: TextStyle(
+                            fontSize: 17, fontWeight: FontWeight.bold),
+                      ),
+                      const Divider(
+                        color: Colors.black45,
+                      ),
+                      Text('$currentSec'),
+                    ]),
+                  ),
                 ),
                 const Spacer(),
                 Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: const Color(0xFF000000),
+                        width: 1.0,
+                        style: BorderStyle.solid,
+                        strokeAlign: BorderSide.strokeAlignInside,
+                      )),
                   width: MediaQuery.of(context).size.width * 0.42,
                   child: Column(children: [
-                    const Text('Random Number'),
+                    const Text(
+                      'Random Number',
+                      style:
+                          TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                    ),
                     const Divider(
                       color: Colors.black45,
                     ),
-                    Text('$currentSec'),
+                    Text('$randomInt'),
                   ]),
                 ),
               ],
-            ),
-            const SizedBox(
-              height: 30.0,
             ),
             Container(
               padding: const EdgeInsets.all(10.0),
@@ -119,12 +147,7 @@ class _HomeState extends State<Home> {
                 )
               ]),
             ),
-            Container(
-              child: Text(
-                '$seconds',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
-              ),
-            ),
+            buildTimer(),
             buildButton(),
           ],
         ),
@@ -132,17 +155,37 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget buildButton(){
-    final isRunning= timer==null ? false: timer!.isActive;
+  Widget buildButton() {
+    final isRunning = timer == null ? false : timer!.isActive;
 
-    if(isRunning){
+    if (isRunning) {
       return ButtonWidget(text: "Stop", onClicked: stopTimer);
     }
 
-  return ButtonWidget(
-    text: "Start",
-    onClicked: startTimer,
-  );
-}
+    return ButtonWidget(
+      text: "Start",
+      onClicked: startTimer,
+    );
+  }
 
+  Widget buildTimer() => SizedBox(
+        width: 100,
+        height: 100,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            CircularProgressIndicator(
+              value: seconds / maxSeconds,
+              strokeWidth: 12,
+            ),
+            Center(
+              child: Text(
+                '$seconds',
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+              ),
+            )
+          ],
+        ),
+      );
 }
