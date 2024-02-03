@@ -16,14 +16,13 @@ class _HomeState extends State<Home> {
   static const maxSeconds = 5;
   int seconds = maxSeconds;
   int currentSec = 12;
-  var randomInt = Random().nextInt(60);
-
-  bool won = false;
+  var randomInt = Random().nextInt(6);
+  int numberOfAttempt = 0, numberOfSuccess = 0;
 
   Timer? timer;
 
   startTimer() {
-    timer = Timer.periodic(Duration(seconds: 1), (_) {
+    timer = Timer.periodic(const Duration(seconds: 1), (_) {
       setState(() {
         seconds--;
         if (seconds < 0) {
@@ -38,18 +37,17 @@ class _HomeState extends State<Home> {
     setState(() {
       currentSec = seconds;
       seconds = maxSeconds;
+      randomInt = Random().nextInt(6);
+      numberOfAttempt++;
     });
-  }
-
-  onClick() {
-    currentSec = 60;
     result();
   }
 
   result() {
-    if (!won) {
+    if (currentSec != randomInt) {
       message = "Sorry !! Try Again!";
     } else {
+      numberOfSuccess++;
       message = "Success :)";
     }
   }
@@ -83,7 +81,7 @@ class _HomeState extends State<Home> {
                   ),
                   width: MediaQuery.of(context).size.width * 0.42,
                   child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
@@ -131,28 +129,90 @@ class _HomeState extends State<Home> {
                 ),
               ],
             ),
-            Container(
-              padding: const EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5), color: Colors.green),
-              width: MediaQuery.of(context).size.width,
-              child: Column(children: [
-                Text(
-                  message,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24.0,
-                  ),
-                )
-              ]),
-            ),
+            buildResult(),
             buildTimer(),
             buildButton(),
           ],
         ),
       ),
     );
+  }
+
+  Widget buildResult() {
+    if (message == "Success :)") {
+      return Container(
+        padding: const EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5), color: Colors.green),
+        width: MediaQuery.of(context).size.width,
+        child: Column(children: [
+          Text(
+            message,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 24.0,
+            ),
+          ),
+          const Divider(
+            color: Colors.black54,
+          ),
+          Text(
+            'Score : $numberOfSuccess / $numberOfAttempt',
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 24.0,
+            ),
+          ),
+        ]),
+      );
+    } else if (message == "Sorry !! Try Again!") {
+      return Container(
+        padding: const EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5), color: Colors.green),
+        width: MediaQuery.of(context).size.width,
+        child: Column(children: [
+          Text(
+            message,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 24.0,
+            ),
+          ),
+          const Divider(
+            color: Colors.black54,
+          ),
+          Text(
+            'Attempts : $numberOfAttempt',
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 24.0,
+            ),
+          ),
+        ]),
+      );
+    } else {
+      return Container(
+        padding: const EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5), color: Colors.green),
+        width: MediaQuery.of(context).size.width,
+        child: Column(children: [
+          Text(
+            message,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 24.0,
+            ),
+          )
+        ]),
+      );
+    }
   }
 
   Widget buildButton() {
