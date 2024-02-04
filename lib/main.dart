@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pause_timer/home.dart';
+import 'package:provider/provider.dart';
+import 'package:pause_timer/app_repository.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -9,15 +11,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Pause Timer',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const Home(),
-    );
+    return ChangeNotifierProvider(
+      create: (context) => AppRepository(),
+      child: MaterialApp(
+        home: Home(),
+      ));
   }
 }
 
