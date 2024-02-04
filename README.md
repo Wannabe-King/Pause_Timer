@@ -1,16 +1,31 @@
-# pause_timer
+# Pause Timer App
 
-A new Flutter project.
+## Overview
+
+This Flutter application implements a simple "Pause Timer" game where users need to stop a countdown timer when it matches a randomly generated number. The app uses clear state management and follows the repository pattern for storing and retrieving data.
+
+## Developer Details
+
+**Developer:** Priyanshu Sidar
+
+**Email:** [sidarsunita2@gmail.com]
+
+**LinkedIn:** [(https://www.linkedin.com/in/priyanshu-sidar-639914144/)]
+
+## Features
+
+- Countdown timer with a random number challenge.
+- Tracking of successful attempts and total attempts.
+- Clean code structure and state management.
+
+## Requirements
+
+- Dart: 3.2.6
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+1. Clone the repository:
 
-A few resources to get you started if this is your first Flutter project:
+   ```bash
+   git clone [(https://github.com/Wannabe-King/Pause_Timer/)https://github.com/Wannabe-King/Pause_Timer/]
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
